@@ -1,0 +1,134 @@
+﻿using Amortization_Calculator_Api.Config;
+using Amortization_Calculator_Api.Dtos;
+using Amortization_Calculator_Api.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+namespace Amortization_Calculator_Api.Services.auth
+{
+    public class AuthService : IAuthService
+    {
+
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly JwtOptions _jwtOptions;
+
+        public AuthService(UserManager<ApplicationUser> userManager, JwtOptions jwtOptions)
+        {
+            _userManager = userManager;
+            _jwtOptions = jwtOptions;
+        }
+
+
+
+
+        public async Task<JwtSecurityToken> generateToken(ApplicationUser user)
+        {
+            var tokenHandelr = new JwtSecurityTokenHandler();
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Issuer = _jwtOptions.Issuer,
+                Audience = _jwtOptions.Audience,
+                Expires = DateTime.Now.AddDays(_jwtOptions.DurationInDays),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key)), SecurityAlgorithms.HmacSha256),
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new(ClaimTypes.Email,user.Email),
+                    new(ClaimTypes.Name,user.firstName + " " + user.lastName),
+                    new(ClaimTypes.Role,user.userType.ToString()),
+                    new(ClaimTypes.NameIdentifier,user.Id.ToString())
+                })
+            };
+
+            var securityToken = tokenHandelr.CreateToken(tokenDescriptor);
+
+            return securityToken as JwtSecurityToken;
+        }
+
+        public async Task<AuthResponse> LoginUserAsync(LoginDto loginDto)
+        {
+
+            //check if user exists
+            var user = await _userManager.FindByEmailAsync(loginDto.email);
+
+            if (user is null || !await _userManager.CheckPasswordAsync(user, loginDto.password))
+            {
+                return null;
+            }
+
+            //generate token
+            var token = await generateToken(user);
+
+            return new AuthResponse
+            {
+                Message = "Login successful",
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                email = user.Email,
+                firstName = user.firstName,
+                lastName = user.lastName,
+                gender = user.gender,
+                userType = user.userType,
+                expireDate = token.ValidTo
+
+            };
+
+        }
+
+        public async Task<AuthResponse> RegisterUserAsync(RegisterDto registerDto)
+        {
+            //check if user exists
+            var userChecked = await _userManager.FindByEmailAsync(registerDto.email);
+
+            if (userChecked != null)
+            {
+                return null;
+            }
+
+            //create user
+            var user = new ApplicationUser
+            {
+                firstName = registerDto.firstName,
+                lastName = registerDto.lastName,
+                UserName = registerDto.email,
+                Email = registerDto.email,
+                PhoneNumber = registerDto.phoneNumber,
+                gender = registerDto.gender,
+                userType = registerDto.userType
+            };
+
+            var result = await _userManager.CreateAsync(user, registerDto.password);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+
+                foreach (var error in result.Errors)
+                    errors += $"{error.Description},";
+
+                return new AuthResponse { Message = errors };
+            }
+
+
+            //generate token
+            var token = await generateToken(user);
+
+            return new AuthResponse
+            {
+                Message = "User created successfully",
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                email = user.Email,
+                firstName = user.firstName,
+                lastName = user.lastName,
+                gender = user.gender,
+                userType = user.userType,
+                expireDate = token.ValidTo
+            };
+
+
+        }
+    }
+}
