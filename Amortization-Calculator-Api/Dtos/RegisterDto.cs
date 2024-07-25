@@ -6,6 +6,8 @@
 
         public required string lastName { get; set; }
 
+        public required string userName { get; set; }
+
         public required string email { get; set; }
 
         public required string password { get; set; }

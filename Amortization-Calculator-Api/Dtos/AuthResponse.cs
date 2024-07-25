@@ -10,6 +10,8 @@
 
         public string lastName { get; set; }
 
+        public string userName { get; set; }
+
         public Gender gender { get; set; }
 
         public UserType userType { get; set; }

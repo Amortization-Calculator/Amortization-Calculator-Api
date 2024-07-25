@@ -38,7 +38,7 @@ namespace Amortization_Calculator_Api.Services.auth
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new(ClaimTypes.Email,user.Email),
-                    new(ClaimTypes.Name,user.firstName + " " + user.lastName),
+                    new(ClaimTypes.Name,user.UserName),
                     new(ClaimTypes.Role,user.userType.ToString()),
                     new(ClaimTypes.NameIdentifier,user.Id.ToString())
                 })
@@ -53,7 +53,7 @@ namespace Amortization_Calculator_Api.Services.auth
         {
 
             //check if user exists
-            var user = await _userManager.FindByEmailAsync(loginDto.email);
+            var user = await _userManager.FindByNameAsync(loginDto.userName);
 
             if (user is null || !await _userManager.CheckPasswordAsync(user, loginDto.password))
             {
@@ -70,6 +70,7 @@ namespace Amortization_Calculator_Api.Services.auth
                 email = user.Email,
                 firstName = user.firstName,
                 lastName = user.lastName,
+                userName = user.UserName,
                 gender = user.gender,
                 userType = user.userType,
                 expireDate = token.ValidTo
@@ -80,10 +81,14 @@ namespace Amortization_Calculator_Api.Services.auth
 
         public async Task<AuthResponse> RegisterUserAsync(RegisterDto registerDto)
         {
-            //check if user exists
-            var userChecked = await _userManager.FindByEmailAsync(registerDto.email);
+            //check if user exists by email
+            var userCheckedByEmail = await _userManager.FindByEmailAsync(registerDto.email);
 
-            if (userChecked != null)
+            //check if user exists by username
+
+            var userCheckedByUserName = await _userManager.FindByNameAsync(registerDto.userName);
+
+            if (userCheckedByEmail != null|| userCheckedByUserName!=null)
             {
                 return null;
             }
@@ -93,7 +98,7 @@ namespace Amortization_Calculator_Api.Services.auth
             {
                 firstName = registerDto.firstName,
                 lastName = registerDto.lastName,
-                UserName = registerDto.email,
+                UserName = registerDto.userName,
                 Email = registerDto.email,
                 PhoneNumber = registerDto.phoneNumber,
                 gender = registerDto.gender,
@@ -123,6 +128,7 @@ namespace Amortization_Calculator_Api.Services.auth
                 email = user.Email,
                 firstName = user.firstName,
                 lastName = user.lastName,
+                userName = user.UserName,
                 gender = user.gender,
                 userType = user.userType,
                 expireDate = token.ValidTo

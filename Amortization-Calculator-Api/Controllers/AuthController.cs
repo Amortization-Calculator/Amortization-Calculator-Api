@@ -29,7 +29,7 @@ namespace Amortization_Calculator_Api.Controllers
 
             if (userResponse == null)
             {
-                return Conflict(new { message = "Email is already in use." });
+                return Conflict(new { message = "Email or UserName is already in use." });
             }
 
             return Ok(userResponse);
