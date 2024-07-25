@@ -27,9 +27,9 @@ namespace Amortization_Calculator_Api.Controllers
 
             var userResponse = await _authService.RegisterUserAsync(registerDto);
 
-            if (userResponse == null)
+            if (!userResponse.isAuthSuccessful)
             {
-                return Conflict(new { message = "Email or UserName is already in use." });
+                return Conflict(new { message = userResponse.Message });
             }
 
             return Ok(userResponse);

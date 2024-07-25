@@ -4,6 +4,8 @@
     {
         public string Message { get; set; }
 
+        public bool isAuthSuccessful { get; set; }
+
         public string email { get; set; }
 
         public string firstName { get; set; }

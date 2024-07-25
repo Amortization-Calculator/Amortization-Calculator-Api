@@ -73,6 +73,7 @@ namespace Amortization_Calculator_Api.Services.auth
                 userName = user.UserName,
                 gender = user.gender,
                 userType = user.userType,
+                isAuthSuccessful = true,
                 expireDate = token.ValidTo
 
             };
@@ -84,13 +85,18 @@ namespace Amortization_Calculator_Api.Services.auth
             //check if user exists by email
             var userCheckedByEmail = await _userManager.FindByEmailAsync(registerDto.email);
 
+            if (userCheckedByEmail!=null)
+            {
+                return new AuthResponse { Message = "Email already in use" , isAuthSuccessful=false };
+            }
+
             //check if user exists by username
 
             var userCheckedByUserName = await _userManager.FindByNameAsync(registerDto.userName);
 
-            if (userCheckedByEmail != null|| userCheckedByUserName!=null)
+            if (userCheckedByUserName!=null)
             {
-                return null;
+                return new AuthResponse { Message = "Username already in use"  , isAuthSuccessful = false };
             }
 
             //create user
@@ -125,6 +131,7 @@ namespace Amortization_Calculator_Api.Services.auth
             {
                 Message = "User created successfully",
                 token = new JwtSecurityTokenHandler().WriteToken(token),
+                isAuthSuccessful = true,
                 email = user.Email,
                 firstName = user.firstName,
                 lastName = user.lastName,
