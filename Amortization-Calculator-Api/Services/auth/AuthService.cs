@@ -1,7 +1,6 @@
 ﻿using Amortization_Calculator_Api.Config;
 using Amortization_Calculator_Api.Dtos;
 using Amortization_Calculator_Api.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
