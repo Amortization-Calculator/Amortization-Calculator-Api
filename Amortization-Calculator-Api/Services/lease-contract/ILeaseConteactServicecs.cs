@@ -16,8 +16,15 @@ namespace Amortization_Calculator_Api.Services.lease_contract
         
         public string GetTemplateFolder(bool Begining, int _cellstart);
 
+        public string GetExcelFile();
 
-      
+
+
+
+
+
+
+
 
     }
 }
