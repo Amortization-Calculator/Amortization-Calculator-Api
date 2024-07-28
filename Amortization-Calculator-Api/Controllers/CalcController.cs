@@ -1,10 +1,12 @@
 ﻿using Amortization_Calculator_Api.Dtos;
 using Amortization_Calculator_Api.Services.lease_contract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace Amortization_Calculator_Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CalcController : ControllerBase
