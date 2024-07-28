@@ -11,6 +11,9 @@ namespace Amortization_Calculator_Api.Services.lease_contract
         public void CloseExcelApplication(Worksheet ContractExcelSheet, Application ContractExcelApplication, Workbook ContractExcelWorkbook);
 
 
+        public ContractType GetContractType(short RentalInterval);
+
+
 
     }
 }
