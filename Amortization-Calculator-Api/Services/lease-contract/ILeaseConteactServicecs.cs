@@ -13,7 +13,11 @@ namespace Amortization_Calculator_Api.Services.lease_contract
 
         public ContractType GetContractType(short RentalInterval);
 
+        
+        public string GetTemplateFolder(bool Begining, int _cellstart);
 
+
+      
 
     }
 }

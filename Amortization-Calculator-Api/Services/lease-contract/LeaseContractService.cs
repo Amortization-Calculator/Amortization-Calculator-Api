@@ -67,5 +67,33 @@ namespace Amortization_Calculator_Api.Services.lease_contract
                 return ContractType.None;
             }
         }
+
+      
+        
+        public string GetTemplateFolder(bool Begining, int _cellstart)
+        {
+            const string _endingFolderName = @"ExcelTemplates\Ending";
+
+            const string _beginingFolderName = @"ExcelTemplates\Begining";
+
+            if (Begining)
+            {
+                _cellstart = 4;
+                return _beginingFolderName;
+
+            }
+            else
+            {
+                _cellstart = 5;
+                return _endingFolderName;
+
+            }
+
+        }
+
+
+
+
+
     }
 }
