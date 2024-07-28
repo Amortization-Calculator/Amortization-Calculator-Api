@@ -52,7 +52,7 @@ namespace Amortization_Calculator_Api.Controllers
                 return Unauthorized(new { message = "Invalid email or password." });
             }
 
-            return Ok(userResponse);
+            return Ok(new {acssesToken = userResponse.token , expierAt = userResponse.expireDate});
         }
 
 
