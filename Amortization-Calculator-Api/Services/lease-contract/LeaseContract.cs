@@ -195,42 +195,28 @@ namespace Amortization_Calculator_Api.Services.lease_contract
         private string GetExcelFile()
         {
 
-            _excelFilename = FilePath + GetTemplateFolder();
-            //excelFilename = "C:\\users\\mmm\\Documents\\Visual Studio 2015\\Projects\\Lessing\\CalcExcel\bin\\Debug\\" + GetTemplateFolder();
+            _excelFilename = Path.Combine(FilePath, GetTemplateFolder());
             TypeOfContract = GetContractType();
+            string fileToCopy;
+
             switch (TypeOfContract)
             {
                 case ContractType.None:
-                    _excelFilename = _excelFilename + "\\G1.xls";
+                    fileToCopy = "G1.xls";
                     StartCopyRow = 0;
                     EndCopyRow = 0;
                     GrossCopyRow = 0;
                     break;
                 case ContractType.Monthly:
-                    if (StartFromFristMonth == true)
-                    {
-                        _excelFilename = _excelFilename + "\\G1f1.xls";
-                    }
-                    else
-                    {
-                        _excelFilename = _excelFilename + "\\G1.xls";
-                    }
+                    fileToCopy = StartFromFristMonth ? "G1f1.xls" : "G1.xls";
                     _firstRowOfCopy = 17;
                     StartCopyRow = 16;
                     EndCopyRow = 16;
                     GrossCopyRow = 0;
                     no_of_line = 0;
-
                     break;
                 case ContractType.Monthly1:
-                    if (StartFromFristMonth == true)
-                    {
-                        _excelFilename = _excelFilename + "\\G6f1.xls";
-                    }
-                    else
-                    {
-                        _excelFilename = _excelFilename + "\\G6.xls";
-                    }
+                    fileToCopy = StartFromFristMonth ? "G6f1.xls" : "G6.xls";
                     _firstRowOfCopy = 17;
                     StartCopyRow = 15;
                     EndCopyRow = 16;
@@ -238,32 +224,15 @@ namespace Amortization_Calculator_Api.Services.lease_contract
                     no_of_line = 2;
                     break;
                 case ContractType.Quarter:
-                    if (StartFromFristMonth == true)
-                    {
-                        _excelFilename = _excelFilename + "\\G3f1.xls";
-                    }
-                    else
-                    {
-                        _excelFilename = _excelFilename + "\\G3.xls";
-                    }
-
+                    fileToCopy = StartFromFristMonth ? "G3f1.xls" : "G3.xls";
                     _firstRowOfCopy = 17;
                     StartCopyRow = 14;
                     EndCopyRow = 16;
                     GrossCopyRow = 2;
                     no_of_line = 3;
                     break;
-
-
                 case ContractType.Quarter1:
-                    if (StartFromFristMonth == true)
-                    {
-                        _excelFilename = _excelFilename + "\\G4f1.xls";
-                    }
-                    else
-                    {
-                        _excelFilename = _excelFilename + "\\G4.xls";
-                    }
+                    fileToCopy = StartFromFristMonth ? "G4f1.xls" : "G4.xls";
                     _firstRowOfCopy = 17;
                     StartCopyRow = 13;
                     EndCopyRow = 16;
@@ -271,14 +240,7 @@ namespace Amortization_Calculator_Api.Services.lease_contract
                     no_of_line = 4;
                     break;
                 case ContractType.SemiAnnual:
-                    if (StartFromFristMonth == true)
-                    {
-                        _excelFilename = _excelFilename + "\\G2f1.xls";
-                    }
-                    else
-                    {
-                        _excelFilename = _excelFilename + "\\G2.xls";
-                    }
+                    fileToCopy = StartFromFristMonth ? "G2f1.xls" : "G2.xls";
                     _firstRowOfCopy = 17;
                     StartCopyRow = 11;
                     EndCopyRow = 16;
@@ -286,31 +248,27 @@ namespace Amortization_Calculator_Api.Services.lease_contract
                     no_of_line = 6;
                     break;
                 case ContractType.Annual:
-                    if (StartFromFristMonth == true)
-                    {
-                        _excelFilename = _excelFilename + "\\G12f1.xls";
-                    }
-                    else
-                    {
-                        _excelFilename = _excelFilename + "\\G12.xls";
-                    }
+                    fileToCopy = StartFromFristMonth ? "G12f1.xls" : "G12.xls";
                     _firstRowOfCopy = 17;
                     StartCopyRow = 17;
                     EndCopyRow = 28;
                     GrossCopyRow = 11;
                     no_of_line = 12;
                     break;
+                default:
+                    throw new Exception("Invalid contract type.");
             }
 
+            _excelFilename = Path.Combine(_excelFilename, fileToCopy);
+            _targetExcelFileName = Path.Combine(SavePath, $"{SessionId}.xls");
 
+            if (!File.Exists(_excelFilename))
+            {
+                throw new FileNotFoundException($"The file {_excelFilename} does not exist.");
+            }
 
-            //string sourcePath = _excelFilename;
-            //string targetPath = @"C:\G1.xls";
-            _targetExcelFileName = string.Format(SavePath + "{0}.xls", SessionId);  //@"C:\G1.xls";
-
-            System.IO.File.Copy(_excelFilename, _targetExcelFileName, true);
-            _excelFilename = _targetExcelFileName;
-            return _excelFilename;
+            File.Copy(_excelFilename, _targetExcelFileName, true);
+            return _targetExcelFileName;
 
         }
 

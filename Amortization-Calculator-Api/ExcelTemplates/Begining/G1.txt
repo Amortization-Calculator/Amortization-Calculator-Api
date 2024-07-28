@@ -1,0 +1,4 @@
+
+   at Amortization_Calculator_Api.Services.lease_contract.LeaseContract.Calculate() in D:\Amortization-Calculator-Api\Amortization-Calculator-Api\Services\lease-contract\LeaseContract.cs:line 320
+Attempted to divide by zero.
+-2147352558
