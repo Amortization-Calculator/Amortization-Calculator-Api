@@ -29,7 +29,7 @@ namespace Amortization_Calculator_Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Addcalc([FromBody] CalcDto calcDto)
+        public async Task<IActionResult> CalcRental([FromBody] CalcDto calcDto)
         {
 
             Random r = new Random();
