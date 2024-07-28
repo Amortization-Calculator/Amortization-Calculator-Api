@@ -24,6 +24,9 @@ namespace Amortization_Calculator_Api
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
 
+            //enable cors
+            builder.Services.AddCors();
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -73,6 +76,8 @@ namespace Amortization_Calculator_Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseAuthentication();
 
