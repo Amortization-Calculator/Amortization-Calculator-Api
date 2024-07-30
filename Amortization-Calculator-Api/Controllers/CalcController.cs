@@ -14,10 +14,11 @@ namespace Amortization_Calculator_Api.Controllers
 
 
         private readonly IWebHostEnvironment _hostingEnvironment;
-
+       
         public CalcController(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
+            
         }
 
 
@@ -57,7 +58,7 @@ namespace Amortization_Calculator_Api.Controllers
             lcontract.FilePath = Path.Combine(_hostingEnvironment.ContentRootPath, "");
             lcontract.SavePath = Path.Combine(_hostingEnvironment.ContentRootPath, "Excel");
             lcontract.Calculate();
- 
+
 
             var result = new Result { rental = lcontract.rental };
 

@@ -67,8 +67,6 @@ namespace Amortization_Calculator_Api.Services.auth
                 Message = "Login successful",
                 token = new JwtSecurityTokenHandler().WriteToken(token),
                 email = user.Email,
-                firstName = user.firstName,
-                lastName = user.lastName,
                 userName = user.UserName,
                 gender = user.gender,
                 userType = user.userType,
@@ -101,8 +99,6 @@ namespace Amortization_Calculator_Api.Services.auth
             //create user
             var user = new ApplicationUser
             {
-                firstName = registerDto.firstName,
-                lastName = registerDto.lastName,
                 UserName = registerDto.userName,
                 Email = registerDto.email,
                 PhoneNumber = registerDto.phoneNumber,
@@ -132,8 +128,6 @@ namespace Amortization_Calculator_Api.Services.auth
                 token = new JwtSecurityTokenHandler().WriteToken(token),
                 isAuthSuccessful = true,
                 email = user.Email,
-                firstName = user.firstName,
-                lastName = user.lastName,
                 userName = user.UserName,
                 gender = user.gender,
                 userType = user.userType,

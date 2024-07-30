@@ -21,7 +21,7 @@ namespace Amortization_Calculator_Api.Dtos
         public double AssetCost { get; set; }
 
         public string SelectedRadio { get; set; }
-        
+
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Please enter valid doubleNumber")]
 

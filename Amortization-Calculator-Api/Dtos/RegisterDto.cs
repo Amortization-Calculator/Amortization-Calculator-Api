@@ -4,9 +4,6 @@ namespace Amortization_Calculator_Api.Dtos
 {
     public class RegisterDto
     {
-        public required string firstName { get; set; }
-
-        public required string lastName { get; set; }
 
         public required string userName { get; set; }
 
