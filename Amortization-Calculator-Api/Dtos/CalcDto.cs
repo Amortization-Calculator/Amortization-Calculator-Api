@@ -4,15 +4,12 @@ namespace Amortization_Calculator_Api.Dtos
 {
     public class CalcDto
     {
-        private int no_of_line;
-        private int _firstRowOfCopy;
-        private const string _endingFolderName = @"ExcelTemplates\Ending";
-        private const string _beginingFolderName = @"ExcelTemplates\Begining";
         private short _no_of_rental;
+
         public double rental = 0;
+
         public double efactiveintrest;
         public bool startFromFristMonth { get; set; }
-        public enum ContractType { None, Monthly, Quarter, SemiAnnual, Annual, Monthly1, Quarter1 };
         public int ContractTypeInt { get; set; }
         public int RasedalAmount { get; set; }
         [Required]
@@ -24,14 +21,15 @@ namespace Amortization_Calculator_Api.Dtos
 
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Please enter valid doubleNumber")]
-
         public double AmountFinance { get; set; }
 
+        
         public double Rentaltype { get; set; }
+        
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Please enter valid doubleNumber")]
-
         public decimal IntrestRate { get; set; }
+        
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Please enter valid doubleNumber")]
 
@@ -78,14 +76,11 @@ namespace Amortization_Calculator_Api.Dtos
 
         public short RentalInterval { get; set; }
 
-        public DateTime ContractDate { get; set; }
-
-        public DateTime FirstDate { get; set; }
 
         public bool ActualDay { get; set; }
+        
         //public bool StartFromFristMonth { get; set; }
-        public int _cellstart;
-        public int _last_cell = 0;
+
 
 
     }

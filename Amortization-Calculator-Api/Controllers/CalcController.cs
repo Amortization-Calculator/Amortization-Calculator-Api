@@ -2,6 +2,7 @@
 using Amortization_Calculator_Api.Services.lease_contract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Office.Interop.Excel;
 
 
 namespace Amortization_Calculator_Api.Controllers
@@ -20,12 +21,6 @@ namespace Amortization_Calculator_Api.Controllers
             _hostingEnvironment = hostingEnvironment;
             
         }
-
-
-
-
-
-
 
 
 
@@ -60,7 +55,7 @@ namespace Amortization_Calculator_Api.Controllers
             lcontract.Calculate();
 
 
-            var result = new Result { rental = lcontract.rental };
+            var result = new Result { rental = lcontract.rental , excelFile = sessionId+".xls"};
 
 
             return Ok(result);
@@ -69,6 +64,38 @@ namespace Amortization_Calculator_Api.Controllers
 
 
 
+
+
+
+
+        [HttpGet("{fileName}")]
+        public async Task<IActionResult> GetFile(string fileName)
+        {
+            var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, "Excel", fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            Application excelApp = new Application();
+
+            Workbook workbook = excelApp.Workbooks.Open(filePath);
+
+            var tempFilePath = Path.Combine(Path.GetTempPath(), fileName);
+
+            
+            workbook.SaveAs(tempFilePath);
+            workbook.Close();
+            excelApp.Quit();
+
+            var fileBytes = System.IO.File.ReadAllBytes(tempFilePath);
+            System.IO.File.Delete(tempFilePath);
+
+            var mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            return File(fileBytes, mimeType, fileName);
+
+        }
 
     }
 }
