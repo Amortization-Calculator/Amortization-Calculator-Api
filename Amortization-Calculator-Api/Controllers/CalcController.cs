@@ -7,7 +7,7 @@ using Microsoft.Office.Interop.Excel;
 
 namespace Amortization_Calculator_Api.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("api/[controller]")]
     public class CalcController : ControllerBase
@@ -30,18 +30,17 @@ namespace Amortization_Calculator_Api.Controllers
 
             Random r = new Random();
             var x = r.Next(0, 1000000);
+
             string sessionId = x.ToString("0000");
             var lcontract = new LeaseContract(sessionId);
             lcontract.AssetCost = calcDto.AssetCost;
             lcontract.AmountFinance = calcDto.AmountFinance;
             lcontract.IntrestRate = calcDto.IntrestRate;
-            lcontract.EffectiveRate = (decimal)calcDto.efactiveintrest;
+            lcontract.EffectiveRate = calcDto.EffectiveRate;
             lcontract.NoOfRental = calcDto.NoOfRental;
             lcontract.RentalInterval = calcDto.RentalInterval;
-            lcontract.Rentaltype = 0;
-            //= Equal
-            //== Compare                                   
-            lcontract.Begining = calcDto.SelectedRadio == "2" ? true : false;
+            lcontract.Rentaltype = 0;                          
+            lcontract.Begining = calcDto.Begining;
             lcontract.GressPriod = calcDto.GressPriod;
             lcontract.ResedialValue = calcDto.ResedialValue;
             lcontract.ActualDay = true;

@@ -1,0 +1,6 @@
+
+   at System.Number.ThrowFormatException[TChar](ReadOnlySpan`1 value)
+   at CallSite.Target(Closure, CallSite, Type, Object)
+   at Amortization_Calculator_Api.Services.lease_contract.LeaseContract.Calculate() in D:\Amortization-Calculator-Api\Amortization-Calculator-Api\Services\lease-contract\LeaseContract.cs:line 397
+The input string '36595.97061667417' was not in a correct format.
+-2146233033

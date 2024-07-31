@@ -1,8 +1,6 @@
 
-   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
-   at System.IO.File.Copy(String sourceFileName, String destFileName, Boolean overwrite)
-   at _4KSA.Models.LeaseContract.GetExcelFile() in C:\Users\mostafa.seiam\Desktop\Leasing\Leasing\Models\LeaseContract.cs:line 301
-   at _4KSA.Models.LeaseContract.Calculate() in C:\Users\mostafa.seiam\Desktop\Leasing\Leasing\Models\LeaseContract.cs:line 344
-Could not find file 'C:\Users\mostafa.seiam\Desktop\Leasing\Leasing\ExcelTemplates\Begining\G1f1.xls'.
+   at System.IO.FileSystem.CopyFile(String sourceFullPath, String destFullPath, Boolean overwrite)
+   at Amortization_Calculator_Api.Services.lease_contract.LeaseContract.GetExcelFile() in D:\Amortization-Calculator-Api\Amortization-Calculator-Api\Services\lease-contract\LeaseContract.cs:line 310
+   at Amortization_Calculator_Api.Services.lease_contract.LeaseContract.Calculate() in D:\Amortization-Calculator-Api\Amortization-Calculator-Api\Services\lease-contract\LeaseContract.cs:line 352
+Could not find file 'D:\Amortization-Calculator-Api\Amortization-Calculator-Api\ExcelTemplates\Begining\G1f1.xls'.
 -2147024894
