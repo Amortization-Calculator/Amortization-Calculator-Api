@@ -7,7 +7,8 @@ using Microsoft.Office.Interop.Excel;
 
 namespace Amortization_Calculator_Api.Controllers
 {
-    
+
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CalcController : ControllerBase
