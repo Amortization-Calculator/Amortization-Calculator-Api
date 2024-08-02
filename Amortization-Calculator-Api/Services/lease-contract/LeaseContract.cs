@@ -389,7 +389,7 @@ namespace Amortization_Calculator_Api.Services.lease_contract
                     {
                         startEndCellRange = "c" + i;
                         var cell = ContractExcelSheet.Range[startEndCellRange].Value;
-                        if (int.Parse(cell.ToString()) > 0)
+                        if (double.Parse(cell.ToString()) > 0)
                         {
                             _cellstart = i;
                             break;
@@ -437,6 +437,8 @@ namespace Amortization_Calculator_Api.Services.lease_contract
             }
             catch (Exception e)
             {
+                CloseExcelApplication();
+
                 List<string> errorDescription = new List<string>();
 
                 errorDescription.Add(Environment.NewLine);
@@ -451,6 +453,7 @@ namespace Amortization_Calculator_Api.Services.lease_contract
                 string errorData = string.Join("", errorDescription.ToArray());
                 string path = _excelFilename.Substring(0, _excelFilename.Length - 4) + ".txt";
                 System.IO.File.WriteAllText(path, errorData);
+
             }
 
         }
