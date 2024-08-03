@@ -8,7 +8,7 @@ using Microsoft.Office.Interop.Excel;
 namespace Amortization_Calculator_Api.Controllers
 {
 
-    [Authorize]
+ //   [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CalcController : ControllerBase
@@ -69,7 +69,7 @@ namespace Amortization_Calculator_Api.Controllers
 
 
         [HttpGet("{fileName}")]
-        public async Task<IActionResult> GetFile(string fileName)
+        public async Task<IActionResult> GetExcelFile(string fileName)
         {
             var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, "Excel", fileName);
 
@@ -96,6 +96,44 @@ namespace Amortization_Calculator_Api.Controllers
             return File(fileBytes, mimeType, fileName);
 
         }
+
+
+
+
+
+
+
+
+        [HttpGet("pdf/{fileName}")]
+        public async Task<IActionResult> GetPdfFile(string fileName)
+        {
+            var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, "Excel", fileName);
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            Application excelApp = new Application();
+
+            Workbook workbook = excelApp.Workbooks.Open(filePath);
+
+            var tempPdfFilePath = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName) + ".pdf");
+
+            // Save the workbook as a PDF
+            workbook.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, tempPdfFilePath);
+
+            workbook.Close();
+            excelApp.Quit();
+
+            var fileBytes = System.IO.File.ReadAllBytes(tempPdfFilePath);
+            System.IO.File.Delete(tempPdfFilePath);
+
+            var mimeType = "application/pdf";
+            var pdfFileName = Path.GetFileNameWithoutExtension(fileName) + ".pdf";
+            return File(fileBytes, mimeType, pdfFileName);
+        }
+
 
     }
 }
