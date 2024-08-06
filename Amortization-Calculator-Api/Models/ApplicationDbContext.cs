@@ -9,6 +9,8 @@ namespace Amortization_Calculator_Api.Models
         {
         }
 
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

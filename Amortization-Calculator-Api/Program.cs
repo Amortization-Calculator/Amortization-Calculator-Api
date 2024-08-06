@@ -35,8 +35,17 @@ namespace Amortization_Calculator_Api
             //DbContext
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+              options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
             );
+
+            builder.Services.AddIdentityCore<ApplicationUser>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase =false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+            });
 
 
             // Add JWT options
