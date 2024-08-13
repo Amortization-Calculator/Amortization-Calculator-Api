@@ -106,7 +106,7 @@ namespace Amortization_Calculator_Api.Services.auth
                 PhoneNumber = registerDto.phoneNumber,
                 gender = registerDto.gender,
                 userType = registerDto.userType,
-                isActivated=false,
+                isActivated=true,
                 usageLease=0
             };
 
