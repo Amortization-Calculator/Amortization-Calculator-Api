@@ -1,6 +1,8 @@
 ﻿using Amortization_Calculator_Api.Dtos;
+using Amortization_Calculator_Api.Models;
 using Amortization_Calculator_Api.Services.lease_contract;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Office.Interop.Excel;
 
@@ -16,11 +18,12 @@ namespace Amortization_Calculator_Api.Controllers
 
 
         private readonly IWebHostEnvironment _hostingEnvironment;
-       
-        public CalcController(IWebHostEnvironment hostingEnvironment)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public CalcController(IWebHostEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _hostingEnvironment = hostingEnvironment;
-            
+            _userManager = userManager;
         }
 
 
@@ -28,11 +31,21 @@ namespace Amortization_Calculator_Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CalcRental([FromBody] CalcDto calcDto)
         {
-
+            // Get the current user
+            var user = await _userManager.GetUserAsync(User);
+            
+            if (user == null) {
+                return Unauthorized();
+            }
+            
+            
+            
+            
+            
             Random r = new Random();
             var x = r.Next(0, 1000000);
 
-            string sessionId = x.ToString("0000");
+            string sessionId = user.UserName.ToString();
             var lcontract = new LeaseContract(sessionId);
             lcontract.AssetCost = calcDto.AssetCost;
             lcontract.AmountFinance = calcDto.AmountFinance;
@@ -53,6 +66,9 @@ namespace Amortization_Calculator_Api.Controllers
             lcontract.FilePath = Path.Combine(_hostingEnvironment.ContentRootPath, "");
             lcontract.SavePath = Path.Combine(_hostingEnvironment.ContentRootPath, "Excel");
             lcontract.Calculate();
+
+            user.usageLease += 1;
+            await _userManager.UpdateAsync(user);
 
 
             var result = new Result { rental = lcontract.rental , excelFile = sessionId+".xls"};
