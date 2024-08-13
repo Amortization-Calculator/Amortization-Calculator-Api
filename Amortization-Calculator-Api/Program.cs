@@ -2,6 +2,7 @@
 using Amortization_Calculator_Api.Config;
 using Amortization_Calculator_Api.Models;
 using Amortization_Calculator_Api.Services.auth;
+using Amortization_Calculator_Api.Services.users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -74,6 +75,7 @@ namespace Amortization_Calculator_Api
 
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<UserServices>();
 
             var app = builder.Build();
 

@@ -419,6 +419,10 @@ namespace Amortization_Calculator_Api.Services.lease_contract
 
                     rental = (double)ContractExcelSheet.Range["C" + _cellstart].Value;
 
+               
+                    ContractExcelSheet.Range["G1:M" + _last_cell].Delete();
+
+
 
                     //ContractExcelApplication.Visible = true;
 
