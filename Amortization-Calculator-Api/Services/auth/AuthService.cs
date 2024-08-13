@@ -70,6 +70,8 @@ namespace Amortization_Calculator_Api.Services.auth
                 userName = user.UserName,
                 gender = user.gender,
                 userType = user.userType,
+                isActivated = user.isActivated,
+                usageLease = user.usageLease,
                 isAuthSuccessful = true,
                 expireDate = token.ValidTo
 
@@ -103,7 +105,9 @@ namespace Amortization_Calculator_Api.Services.auth
                 Email = registerDto.email,
                 PhoneNumber = registerDto.phoneNumber,
                 gender = registerDto.gender,
-                userType = registerDto.userType
+                userType = registerDto.userType,
+                isActivated=false,
+                usageLease=0
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.password);
@@ -131,6 +135,8 @@ namespace Amortization_Calculator_Api.Services.auth
                 userName = user.UserName,
                 gender = user.gender,
                 userType = user.userType,
+                isActivated = user.isActivated,
+                usageLease = user.usageLease,
                 expireDate = token.ValidTo
             };
 

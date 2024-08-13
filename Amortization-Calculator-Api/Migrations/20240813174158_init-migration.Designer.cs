@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Amortization_Calculator_Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240806013708_AddUser")]
-    partial class AddUser
+    [Migration("20240813174158_init-migration")]
+    partial class initmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,6 +76,12 @@ namespace Amortization_Calculator_Api.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("isActivated")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("usageLease")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("userType")
                         .IsRequired()

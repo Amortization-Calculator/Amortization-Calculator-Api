@@ -12,5 +12,9 @@ namespace Amortization_Calculator_Api.Models
 
         [MaxLength(10)]
         public required UserType userType { get; set; }
+
+        public required bool isActivated { get; set; }
+
+        public required int usageLease { get; set; }
     }
 }

@@ -74,6 +74,12 @@ namespace Amortization_Calculator_Api.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("isActivated")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("usageLease")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("userType")
                         .IsRequired()
                         .HasMaxLength(10)

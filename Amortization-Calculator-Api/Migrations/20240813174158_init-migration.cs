@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Amortization_Calculator_Api.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUser : Migration
+    public partial class initmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-           
+            
 
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
@@ -20,6 +20,8 @@ namespace Amortization_Calculator_Api.Migrations
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     gender = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
                     userType = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
+                    isActivated = table.Column<bool>(type: "INTEGER", nullable: false),
+                    usageLease = table.Column<int>(type: "INTEGER", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -40,7 +42,7 @@ namespace Amortization_Calculator_Api.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
-
+           
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",

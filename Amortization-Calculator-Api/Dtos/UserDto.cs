@@ -11,5 +11,9 @@
         public required UserType userType { get; set; }
 
         public required string phoneNumber { get; set; }
+
+        public bool isActivated { get; set; }
+
+        public int usageLease { get; set; }
     }
 }

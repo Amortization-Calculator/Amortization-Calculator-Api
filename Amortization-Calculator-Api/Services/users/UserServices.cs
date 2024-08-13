@@ -23,7 +23,9 @@ namespace Amortization_Calculator_Api.Services.users
                 Email = user.Email,
                 gender = user.gender,
                 userType = user.userType,
-                phoneNumber = user.PhoneNumber
+                phoneNumber = user.PhoneNumber,
+                isActivated = user.isActivated,
+                usageLease = user.usageLease
             })
             .ToListAsync();
 

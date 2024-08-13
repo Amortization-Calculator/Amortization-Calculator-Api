@@ -14,6 +14,10 @@
 
         public UserType userType { get; set; }
 
+        public bool isActivated { get; set; }
+
+        public int usageLease { get; set; }
+
         public string token { get; set; }
 
         public DateTime expireDate { get; set; }
