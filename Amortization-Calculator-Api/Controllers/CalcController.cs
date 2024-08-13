@@ -10,7 +10,7 @@ using Microsoft.Office.Interop.Excel;
 namespace Amortization_Calculator_Api.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CalcController : ControllerBase
@@ -37,15 +37,15 @@ namespace Amortization_Calculator_Api.Controllers
             if (user == null) {
                 return Unauthorized();
             }
-            
-            
-            
-            
-            
+
+
+
+
+
             Random r = new Random();
             var x = r.Next(0, 1000000);
 
-            string sessionId = user.UserName.ToString();
+            string sessionId = x.ToString("0000");
             var lcontract = new LeaseContract(sessionId);
             lcontract.AssetCost = calcDto.AssetCost;
             lcontract.AmountFinance = calcDto.AmountFinance;
@@ -95,23 +95,34 @@ namespace Amortization_Calculator_Api.Controllers
             }
 
             Application excelApp = new Application();
-
             Workbook workbook = excelApp.Workbooks.Open(filePath);
 
             var tempFilePath = Path.Combine(Path.GetTempPath(), fileName);
 
-            
             workbook.SaveAs(tempFilePath);
             workbook.Close();
             excelApp.Quit();
 
-            var fileBytes = System.IO.File.ReadAllBytes(tempFilePath);
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(tempFilePath);
             System.IO.File.Delete(tempFilePath);
 
             var mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            return File(fileBytes, mimeType, fileName);
 
+           
+            var result = File(fileBytes, mimeType, fileName);
+
+            Response.OnCompleted(() =>
+            {
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                return Task.CompletedTask;
+            });
+
+            return result;
         }
+
 
 
 
