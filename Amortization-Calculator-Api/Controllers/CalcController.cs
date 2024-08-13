@@ -111,14 +111,6 @@ namespace Amortization_Calculator_Api.Controllers
            
             var result = File(fileBytes, mimeType, fileName);
 
-            Response.OnCompleted(() =>
-            {
-                if (System.IO.File.Exists(filePath))
-                {
-                    System.IO.File.Delete(filePath);
-                }
-                return Task.CompletedTask;
-            });
 
             return result;
         }
