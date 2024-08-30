@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Amortization_Calculator_Api.Controllers
 {
-
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController: ControllerBase
@@ -18,7 +18,7 @@ namespace Amortization_Calculator_Api.Controllers
         }
 
 
-        [Authorize]
+        
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
@@ -33,5 +33,16 @@ namespace Amortization_Calculator_Api.Controllers
 
 
         }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeActive()
+        {
+            await userServices.ChangeActive(); // Await the async method
+            return Ok("All users are deactivated.");
+        }
+
+
     }
 }

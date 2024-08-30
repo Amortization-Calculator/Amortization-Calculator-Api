@@ -88,32 +88,27 @@ namespace Amortization_Calculator_Api.Controllers
         public async Task<IActionResult> GetExcelFile(string fileName)
         {
             var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, "Excel", fileName);
+            
 
-            if (!System.IO.File.Exists(filePath))
+            if (System.IO.File.Exists(filePath))
             {
-                return NotFound();
+                var fileBytes = System.IO.File.ReadAllBytes(filePath);
+                
+
+                // Return the file
+                var result = File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+
+                // Delete the file after sending
+                System.IO.File.Delete(filePath);
+
+                return result;
             }
-
-            Application excelApp = new Application();
-            Workbook workbook = excelApp.Workbooks.Open(filePath);
-
-            var tempFilePath = Path.Combine(Path.GetTempPath(), fileName);
-
-            workbook.SaveAs(tempFilePath);
-            workbook.Close();
-            excelApp.Quit();
-
-            var fileBytes = await System.IO.File.ReadAllBytesAsync(tempFilePath);
-            System.IO.File.Delete(tempFilePath);
-
-            var mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
-           
-            var result = File(fileBytes, mimeType, fileName);
-
-
-            return result;
+            else
+            {
+                return NotFound("File not found.");
+            }
         }
+
 
 
 
@@ -134,24 +129,25 @@ namespace Amortization_Calculator_Api.Controllers
             }
 
             Application excelApp = new Application();
-
             Workbook workbook = excelApp.Workbooks.Open(filePath);
 
             var tempPdfFilePath = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName) + ".pdf");
 
-            // Save the workbook as a PDF
+           
             workbook.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, tempPdfFilePath);
 
             workbook.Close();
             excelApp.Quit();
 
-            var fileBytes = System.IO.File.ReadAllBytes(tempPdfFilePath);
-            System.IO.File.Delete(tempPdfFilePath);
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(tempPdfFilePath);
+
 
             var mimeType = "application/pdf";
             var pdfFileName = Path.GetFileNameWithoutExtension(fileName) + ".pdf";
+
             return File(fileBytes, mimeType, pdfFileName);
         }
+
 
 
     }

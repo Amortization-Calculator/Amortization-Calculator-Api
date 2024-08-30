@@ -2,6 +2,7 @@
 using Amortization_Calculator_Api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace Amortization_Calculator_Api.Services.users
 {
@@ -40,5 +41,27 @@ namespace Amortization_Calculator_Api.Services.users
                 Users = users
             };
         }
+
+        public async Task ChangeActive()
+        {
+            var users = await _userManager.Users.ToListAsync();
+
+            foreach (var user in users)
+            {
+                if (user.UserName != "admin")
+                {
+                    user.isActivated = false;
+                }
+        
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    Console.WriteLine($"Failed to update user {user.Id}: {result.Errors.FirstOrDefault()?.Description}");
+                }
+            }
+        }
+
+
     }
 }

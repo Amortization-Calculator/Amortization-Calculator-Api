@@ -1,5 +1,7 @@
 
-   at Microsoft.Office.Interop.Excel._Worksheet.get_Range(Object Cell1, Object Cell2)
-   at Amortization_Calculator_Api.Services.lease_contract.LeaseContract.Calculate() in D:\Amortization-Calculator-Api\Amortization-Calculator-Api\Services\lease-contract\LeaseContract.cs:line 422
-0x800A03EC
--2146827284
+   at System.RuntimeTypeHandle.AllocateComObject(Void* pClassFactory)
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+   at Amortization_Calculator_Api.Services.lease_contract.LeaseContract.OpenExcelApplication(String xlFileName) in D:\Amortization-Calculator-Api\Amortization-Calculator-Api\Services\lease-contract\LeaseContract.cs:line 306
+   at Amortization_Calculator_Api.Services.lease_contract.LeaseContract.Calculate() in D:\Amortization-Calculator-Api\Amortization-Calculator-Api\Services\lease-contract\LeaseContract.cs:line 366
+Retrieving the COM class factory for component with CLSID {00024500-0000-0000-C000-000000000046} failed due to the following error: 80040154 Class not registered (0x80040154 (REGDB_E_CLASSNOTREG)).
+-2147221164

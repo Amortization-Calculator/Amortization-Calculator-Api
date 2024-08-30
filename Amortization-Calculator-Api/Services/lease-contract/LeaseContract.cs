@@ -1,5 +1,7 @@
 ﻿using Amortization_Calculator_Api.Dtos;
 using Microsoft.Office.Interop.Excel;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Amortization_Calculator_Api.Services.lease_contract
 {
@@ -16,7 +18,8 @@ namespace Amortization_Calculator_Api.Services.lease_contract
 
         private const string _endingFolderName = @"ExcelTemplates\Ending";
 
-        private const string _beginingFolderName = @"ExcelTemplates\Begining";
+        private readonly string _beginingFolderName = @"ExcelTemplates\Begining";
+
 
         private short _no_of_rental;
 
@@ -198,7 +201,7 @@ namespace Amortization_Calculator_Api.Services.lease_contract
         {
             try
             {
-                string templateFolder = Path.Combine(FilePath, GetTemplateFolder());
+                string templateFolder = Path.Combine(FilePath, GetTemplateFolder()).Replace("\\", "/");
                 _excelFilename = templateFolder;
                 TypeOfContract = GetContractType();
                 string fileToCopy = string.Empty;
@@ -312,16 +315,42 @@ namespace Amortization_Calculator_Api.Services.lease_contract
         private void CloseExcelApplication()
         {
 
-            //Clear worksheet reference
-            ContractExcelSheet = null;
-            //Close excel workbook
-            ContractExcelWorkbook.Save();
-            ContractExcelWorkbook.Close(true);
-            //Quit or exit the excel application
-            ContractExcelApplication.Quit();
-            ContractExcelApplication = null;
-            //System.Runtime.InteropServices.Marshal.ReleaseComObject(ContractExcelApplication);
-            //System.Runtime.InteropServices.Marshal.ReleaseComObject(ContractExcelApplication);
+            try
+            {
+                // Clear the worksheet reference
+                if (ContractExcelSheet != null)
+                {
+                    Marshal.ReleaseComObject(ContractExcelSheet);
+                    ContractExcelSheet = null;
+                }
+
+                // Save and close the Excel workbook
+                if (ContractExcelWorkbook != null)
+                {
+                    ContractExcelWorkbook.Save();
+                    ContractExcelWorkbook.Close(true);
+                    Marshal.ReleaseComObject(ContractExcelWorkbook);
+                    ContractExcelWorkbook = null;
+                }
+
+                // Quit the Excel application
+                if (ContractExcelApplication != null)
+                {
+                    ContractExcelApplication.Quit();
+                    Marshal.ReleaseComObject(ContractExcelApplication);
+                    ContractExcelApplication = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exception if necessary
+                Console.WriteLine($"Error closing Excel: {ex.Message}");
+            }
+            finally
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
         }
 
 
@@ -419,8 +448,13 @@ namespace Amortization_Calculator_Api.Services.lease_contract
 
                     rental = (double)ContractExcelSheet.Range["C" + _cellstart].Value;
 
-               
+                    //worksheet["A1"].CellStyle.Locked = false;
+                    // sheet.AllocatedRange.IsFormulaHidden = true;
+
                     ContractExcelSheet.Range["G1:M" + _last_cell].Delete();
+                    ContractExcelSheet.Range["A1:M" + _last_cell].FormulaHidden = true;
+                    ContractExcelSheet.Protect(5060);
+                    //   ContractExcelSheet = true;
 
 
 

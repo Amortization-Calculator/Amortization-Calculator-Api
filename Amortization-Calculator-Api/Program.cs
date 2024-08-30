@@ -2,7 +2,6 @@
 using Amortization_Calculator_Api.Config;
 using Amortization_Calculator_Api.Models;
 using Amortization_Calculator_Api.Services.auth;
-using Amortization_Calculator_Api.Services.background;
 using Amortization_Calculator_Api.Services.users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -32,7 +31,6 @@ namespace Amortization_Calculator_Api
             // Add services
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<UserServices>();
-            builder.Services.AddScoped<DeleteServices>();
 
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -80,12 +78,17 @@ namespace Amortization_Calculator_Api
             });
 
 
+
             
             
             var app = builder.Build();
 
 
-            app.UseHttpsRedirection();
+/*            app.UseSwagger();
+            app.UseSwaggerUI();*/
+
+
+                   app.UseHttpsRedirection();
 
             app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
@@ -95,11 +98,7 @@ namespace Amortization_Calculator_Api
 
             app.MapControllers();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var deleteServices = scope.ServiceProvider.GetRequiredService<DeleteServices>();
-                deleteServices.DeleteFilesOlderThan24Hours();
-            }
+
 
             app.Run();
         }

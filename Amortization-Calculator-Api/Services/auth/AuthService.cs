@@ -54,7 +54,8 @@ namespace Amortization_Calculator_Api.Services.auth
             //check if user exists
             var user = await _userManager.FindByNameAsync(loginDto.userName);
 
-            if (user is null || !await _userManager.CheckPasswordAsync(user, loginDto.password))
+
+            if (user is null || !await _userManager.CheckPasswordAsync(user, loginDto.password)||user.isActivated==false)
             {
                 return null;
             }
