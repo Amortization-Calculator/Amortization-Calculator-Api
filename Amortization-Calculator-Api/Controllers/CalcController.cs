@@ -98,8 +98,8 @@ namespace Amortization_Calculator_Api.Controllers
                 // Return the file
                 var result = File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
 
-                // Delete the file after sending
-                System.IO.File.Delete(filePath);
+             /*   // Delete the file after sending
+                System.IO.File.Delete(filePath);*/
 
                 return result;
             }
